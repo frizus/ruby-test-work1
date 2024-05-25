@@ -4,11 +4,30 @@
     <title>Testing</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%= stylesheet_link_tag "rails_admin/rails_admin.css", media: :all %>
+    <%= javascript_include_tag "rails_admin/rails_admin.js" %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 col-lg-offset-4 col-lg-4">
+          <% if flash.any? %>
+            <% flash.each do |key, value| %>
+              <% alert_class = case key
+                               when 'notice' then "success"
+                               when 'alert' then "danger"
+                               else key
+                               end %>
+              <div class="alert alert-<%= alert_class %>"><%= value %></div>
+            <% end %>
+          <% end %>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
