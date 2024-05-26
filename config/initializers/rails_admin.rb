@@ -1,4 +1,6 @@
 RailsAdmin.config do |config|
+  config.parent_controller = 'ApplicationController'
+
   ### Popular gems integration
 
   ## == Devise ==
@@ -25,8 +27,9 @@ RailsAdmin.config do |config|
   config.actions do
     dashboard                     # mandatory
     index                         # mandatory
-    new
-    export
+    export do
+
+    end
     bulk_delete
     show
     edit

@@ -32,10 +32,9 @@ class Ability
     can :read, :dashboard
 
     if user.admin?
-      can :manage, :answer_appovals
-      cannot :manage, :create_approvals
+      can :manage, [User, Role, :answer_approvals]
     elsif user.worker?
-      can :manage, :create_approvals
+      can :manage, [Approval]
     end
   end
 end

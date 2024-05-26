@@ -5,7 +5,7 @@ class User < ApplicationRecord
   belongs_to :role
 
   def role?(needed_role)
-    role.name == needed_role
+    role.name == needed_role.to_s
   end
 
   def admin?

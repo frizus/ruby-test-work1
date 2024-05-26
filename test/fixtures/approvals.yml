@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 
+  created_by: one
+  period_from: 2024-05-26 10:21:45
+  period_to: 2024-05-26 10:21:45
+  comment: MyText
+  status: MyString
+  status_last_change_by: one
+  status_comment: MyText
+
+two:
+  type: 
+  created_by: two
+  period_from: 2024-05-26 10:21:45
+  period_to: 2024-05-26 10:21:45
+  comment: MyText
+  status: MyString
+  status_last_change_by: two
+  status_comment: MyText

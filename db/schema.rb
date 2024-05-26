@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20240526091551) do
+ActiveRecord::Schema.define(version: 20240526102145) do
+
+  create_table "approvals", force: :cascade do |t|
+    t.string   "type"
+    t.integer  "created_by_id"
+    t.datetime "period_from"
+    t.datetime "period_to"
+    t.text     "comment"
+    t.string   "status"
+    t.integer  "status_last_change_by_id"
+    t.datetime "status_last_changed_at"
+    t.text     "status_comment"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["created_by_id"], name: "index_approvals_on_created_by_id"
+    t.index ["status_last_change_by_id"], name: "index_approvals_on_status_last_change_by_id"
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"

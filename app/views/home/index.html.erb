@@ -1,0 +1,19 @@
+<p class="lead">
+  <% if user_signed_in? %>
+    Вы авторизованы (<%= current_user.role.name %>)
+  <% else %>
+    Вы не авторизованы
+  <% end %>
+</p>
+<ul class="nav nav-pills nav-stacked">
+  <% if user_signed_in? %>
+    <li>
+      <%= link_to 'Войти в админку', rails_admin_path %>
+      <%= link_to 'Разавторизоваться', destroy_user_session_path, method: :delete %>
+    </li>
+  <% else %>
+    <li>
+      <%= link_to 'Войти', new_user_session_path %>
+    </li>
+  <% end %>
+</ul>
