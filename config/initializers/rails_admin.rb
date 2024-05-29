@@ -1,3 +1,10 @@
+Dir[Rails.root.join('lib', 'rails_admin', 'config', '*.rb'),].each do |file|
+  require file
+end
+Dir[Rails.root.join('lib', 'rails_admin', 'config', 'actions', '*.rb'),].each do |file|
+  require file
+end
+
 RailsAdmin.config do |config|
   config.parent_controller = 'ApplicationController'
 
@@ -27,9 +34,8 @@ RailsAdmin.config do |config|
   config.actions do
     dashboard                     # mandatory
     index                         # mandatory
-    export do
-
-    end
+    export
+    new
     bulk_delete
     show
     edit
@@ -39,5 +45,16 @@ RailsAdmin.config do |config|
     ## With an audit adapter, you can add:
     # history_index
     # history_show
+
+    approval_admin_delete
+    approval_admin_edit
+    approval_admin_index
+    approval_admin_show
+
+    approval_worker_delete
+    approval_worker_edit
+    approval_worker_index
+    approval_worker_new
+    approval_worker_show
   end
 end

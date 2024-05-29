@@ -1,6 +1,8 @@
 class Ability
   include CanCan::Ability
 
+
+
   def initialize(user)
     # Define abilities for the passed in user here. For example:
     #
@@ -32,9 +34,54 @@ class Ability
     can :read, :dashboard
 
     if user.admin?
-      can :manage, [User, Role, :answer_approvals]
+      can :manage, [User, Role, Approval]
+      cannot [
+               :approval_worker_delete,
+               :approval_worker_edit,
+               :approval_worker_index,
+               :approval_worker_new,
+               :approval_worker_show
+             ], Approval
+      # can [
+      #       :index,
+      #       :export,
+      #       :new,
+      #       :bulk_delete,
+      #       :show,
+      #       :edit,
+      #       :delete,
+      #       :show_in_app,
+      #
+      #       :approval_admin_delete,
+      #       :approval_admin_edit,
+      #       :approval_admin_index,
+      #       :approval_admin_show
+      #     ], Approval
     elsif user.worker?
-      can :manage, [Approval]
+      # can :manage, Approval#, created_by_id: user.id
+      #can :manage, Approval
+      cannot :manage, Approval
+      can [
+            :index,
+            :approval_worker_delete,
+            :approval_worker_edit,
+            :approval_worker_index,
+            :approval_worker_new,
+            :approval_worker_show
+          ], Approval
+      # cannot [
+      #          #:index,
+      #          :export,
+      #          :new,
+      #          :bulk_delete,
+      #          :show,
+      #
+      #          :edit,
+      #          :delete,
+      #          :show_in_app,
+      #        ], Approval
+      # https://github.com/railsadminteam/rails_admin/wiki/CanCanCan#railsadmin-verbs
+
     end
   end
 end
