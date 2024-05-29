@@ -47,14 +47,31 @@ RailsAdmin.config do |config|
     # history_show
 
     approval_admin_delete
-    approval_admin_edit
-    approval_admin_index
-    approval_admin_show
 
     approval_worker_delete
     approval_worker_edit
-    approval_worker_index
     approval_worker_new
     approval_worker_show
+  end
+
+  config.model 'Approval' do
+    list do
+      scopes [nil, :not_answered]
+
+      fields :type, :status, :period_from, :period_to, :comment, :status_comment
+      fields :created_by_id, :status_last_change_by_id, :created_at, :updated_at do
+        visible do
+          bindings[:view]._current_user.admin?
+        end
+      end
+    end
+    edit do
+      fields :type, :period_from, :period_to, :comment
+      fields :created_by_id, :status, :status_last_change_by_id, :status_comment, :created_at, :updated_at do
+        visible do
+          bindings[:view]._current_user.admin?
+        end
+      end
+    end
   end
 end

@@ -34,38 +34,25 @@ class Ability
     can :read, :dashboard
 
     if user.admin?
-      can :manage, [User, Role, Approval]
-      cannot [
-               :approval_worker_delete,
-               :approval_worker_edit,
-               :approval_worker_index,
-               :approval_worker_new,
-               :approval_worker_show
-             ], Approval
-      # can [
-      #       :index,
-      #       :export,
-      #       :new,
-      #       :bulk_delete,
-      #       :show,
-      #       :edit,
-      #       :delete,
-      #       :show_in_app,
-      #
-      #       :approval_admin_delete,
-      #       :approval_admin_edit,
-      #       :approval_admin_index,
-      #       :approval_admin_show
-      #     ], Approval
-    elsif user.worker?
-      # can :manage, Approval#, created_by_id: user.id
-      #can :manage, Approval
-      cannot :manage, Approval
+      can :manage, [User, Role]
       can [
             :index,
+            :export,
+            :new,
+            :bulk_delete,
+            :show,
+            :edit,
+            :delete,
+            :show_in_app,
+
+            :approval_admin_delete,
+          ], Approval
+    elsif user.worker?
+      cannot :manage, Approval
+      can :index, Approval, created_by_id: user.id
+      can [
             :approval_worker_delete,
             :approval_worker_edit,
-            :approval_worker_index,
             :approval_worker_new,
             :approval_worker_show
           ], Approval

@@ -21,3 +21,28 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      type:
+        vacation: "Отпуск"
+        time_off: "Отгул"
+      status:
+        created: "Заведена"
+        deleted: "Удалена"
+        restored: "Восстановлена"
+        considering: "На рассмотрении"
+        approved: "Одобрена"
+        denied: "Отклонена"
+
+  admin:
+    actions:
+      approval_admin_index:
+        title: "Поданные заявки"
+        breadcrumb: "Поданные заявки"
+        menu: "Поданные заявки"
+      approval_worker_new:
+        title: "Подать заявку"
+        breadcrumb: "Подать заявку"
+        menu: "Подать заявку"
+      approval_worker_edit:
+        menu: "Редактировать заявку"

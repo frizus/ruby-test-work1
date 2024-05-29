@@ -1,12 +1,12 @@
 module RailsAdmin
   module Config
     module Actions
-      class ApprovalAdminEdit < RailsAdmin::Config::Actions::Edit
+      class ApprovalAdminApprove < RailsAdmin::Config::Actions::Delete
         include RailsAdmin::Config::ApprovalAdminHelper
         RailsAdmin::Config::Actions.register(self)
 
         register_instance_option :route_fragment do
-          "admin/edit"
+          "admin/approve"
         end
       end
     end
