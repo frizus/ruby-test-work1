@@ -35,7 +35,6 @@ module RailsAdmin
 
               @object.set_attributes(params[@abstract_model.param_key])
               # ДОБАВЛЕНО
-              @object.status = 'created'
               @object.created_by_id = current_user.id
               # ДОБАВЛЕНО
               # ПОМЕНЯНО

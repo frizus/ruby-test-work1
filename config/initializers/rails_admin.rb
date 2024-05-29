@@ -46,6 +46,8 @@ RailsAdmin.config do |config|
     # history_index
     # history_show
 
+    state
+
     approval_admin_delete
 
     approval_worker_delete
@@ -58,13 +60,20 @@ RailsAdmin.config do |config|
     list do
       scopes [nil, :not_answered]
 
-      fields :type, :status, :period_from, :period_to, :comment, :status_comment
+      field :status, :state
+
+      fields :type, :period_from, :period_to, :comment, :status_comment
       fields :created_by_id, :status_last_change_by_id, :created_at, :updated_at do
         visible do
           bindings[:view]._current_user.admin?
         end
       end
     end
+    # https://github.com/zcpdog/rails_admin_aasm/issues/3
+    state({
+      events: {deleted: 'btn-danger', restored: 'btn-warning', consider: 'btn-success', approve: 'btn-success', deny: 'btn-danger'},
+      states: {delete: 'label-important', restore: 'label-warning', consider: 'label-success', approve: 'label-success', deny: 'label-danger'}
+    })
     edit do
       fields :type, :period_from, :period_to, :comment
       fields :created_by_id, :status, :status_last_change_by_id, :status_comment, :created_at, :updated_at do

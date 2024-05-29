@@ -1,4 +1,31 @@
 class Approval < ApplicationRecord
+  include AASM
+
+  aasm column: 'status', no_direct_assignment: true, create_scopes: false do
+    state :created, initial: true
+    state :trashd
+    state :restored
+    state :considering
+    state :approved
+    state :denied
+
+    event :trash do
+      transitions from: %i(created restored), to: :trashed
+    end
+    event :restore do
+      transitions from: %i(trashed), to: :restored
+    end
+    event :consider do
+      transitions from: %i(created restored), to: :considering
+    end
+    event :approve do
+      transitions from: %i(created restored considering denied), to: :approved
+    end
+    event :deny do
+      transitions from: %i(created restored considering approved), to: :denied
+    end
+  end
+
   self.inheritance_column = :type1
   belongs_to :created_by, class_name: 'User', foreign_key: 'created_by_id'
   belongs_to :status_last_change_by, class_name: 'User', foreign_key: 'status_last_change_by_id'
@@ -7,7 +34,7 @@ class Approval < ApplicationRecord
 
   # https://vitalyliber.medium.com/how-to-translate-enum-in-rails-admin-ec001456e629
   enum type: %w(vacation time_off).each_with_object({}) { |e, h| h[e] = e }
-  enum status: %w(created deleted restored considering approved denied).each_with_object({}) { |e, h| h[e] = e }
+  enum status: %w(created trashed restored considering approved denied).each_with_object({}) { |e, h| h[e] = e }
 
   def type_enum
     self.class.types.each_with_object({}) do |(_, v), h|
@@ -32,11 +59,11 @@ class Approval < ApplicationRecord
           value ? I18n.t("activerecord.attributes.type.#{value}") : '-'
         end
       end
-      field :status do
-        pretty_value do
-          value ? I18n.t("activerecord.attributes.status.#{value}") : '-'
-        end
-      end
+      # field :status do
+      #   pretty_value do
+      #     value ? I18n.t("activerecord.attributes.status.#{value}") : '-'
+      #   end
+      # end
     end
   end
 end

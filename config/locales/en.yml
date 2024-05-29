@@ -46,3 +46,5 @@ en:
         menu: "Подать заявку"
       approval_worker_edit:
         menu: "Редактировать заявку"
+      approval_worker_delete:
+        menu: "Удалить заявку"

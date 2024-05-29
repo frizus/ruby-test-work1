@@ -54,7 +54,8 @@ class Ability
             :approval_worker_delete,
             :approval_worker_edit,
             :approval_worker_new,
-            :approval_worker_show
+            :approval_worker_show,
+            :state
           ], Approval
       # cannot [
       #          #:index,
@@ -68,7 +69,8 @@ class Ability
       #          :show_in_app,
       #        ], Approval
       # https://github.com/railsadminteam/rails_admin/wiki/CanCanCan#railsadmin-verbs
-
+      # can :read, Approval
+      can :all_events, Approval
     end
   end
 end
