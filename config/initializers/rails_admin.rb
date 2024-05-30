@@ -83,7 +83,7 @@ RailsAdmin.config do |config|
     end
     # https://github.com/zcpdog/rails_admin_aasm/issues/3
     state({
-      events: {trash: 'btn-default', restore: 'btn-default', consider: 'btn-default', approve: 'btn-success', deny: 'btn-warning'},
+      events: {trash: 'btn-default', restore: 'btn-default', consider: 'btn-default', approve: 'btn-default', deny: 'btn-default'},
       states: {created: 'label-primary', trashed: 'label-danger', restored: 'label-primary', considering: 'label-info', approved: 'label-success', denied: 'label-danger'}
     })
     edit do
