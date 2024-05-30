@@ -1,9 +1,28 @@
+# == Schema Information
+#
+# Table name: approvals
+#
+#  id            :integer          not null, primary key
+#  type          :string
+#  created_by_id :integer
+#  period_from   :date
+#  period_to     :date
+#  comment       :text
+#  status        :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_approvals_on_created_by_id  (created_by_id)
+#
+
 class Approval < ApplicationRecord
   include AASM
 
-  aasm column: 'status', no_direct_assignment: true, create_scopes: false do
+  aasm column: 'status' do
     state :created, initial: true
-    state :trashd
+    state :trashed
     state :restored
     state :considering
     state :approved
@@ -16,7 +35,7 @@ class Approval < ApplicationRecord
       transitions from: %i(trashed), to: :restored
     end
     event :consider do
-      transitions from: %i(created restored), to: :considering
+      transitions from: %i(created restored denied approved), to: :considering
     end
     event :approve do
       transitions from: %i(created restored considering denied), to: :approved
@@ -28,7 +47,6 @@ class Approval < ApplicationRecord
 
   self.inheritance_column = :type1
   belongs_to :created_by, class_name: 'User', foreign_key: 'created_by_id'
-  belongs_to :status_last_change_by, class_name: 'User', foreign_key: 'status_last_change_by_id'
 
   scope :not_answered, -> { where(status: %w(created restored considering))}
 
@@ -44,7 +62,7 @@ class Approval < ApplicationRecord
 
   def status_enum
     self.class.statuses.each_with_object({}) do |(_, v), h|
-      h[I18n.t("activerecord.attributes.status.#{v}")] = v
+      h[self.class.aasm.human_event_name(v)] = v
     end
   end
 

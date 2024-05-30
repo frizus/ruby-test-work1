@@ -28,23 +28,17 @@ en:
         time_off: "Отгул"
       status:
         created: "Заведена"
-        deleted: "Удалена"
+        trashed: "Удалена"
         restored: "Восстановлена"
         considering: "На рассмотрении"
         approved: "Одобрена"
         denied: "Отклонена"
 
   admin:
+    state_machine:
+      event_fired: 'Действие %{event} выполнено.'
     actions:
-      approval_admin_index:
-        title: "Поданные заявки"
-        breadcrumb: "Поданные заявки"
-        menu: "Поданные заявки"
       approval_worker_new:
         title: "Подать заявку"
         breadcrumb: "Подать заявку"
         menu: "Подать заявку"
-      approval_worker_edit:
-        menu: "Редактировать заявку"
-      approval_worker_delete:
-        menu: "Удалить заявку"

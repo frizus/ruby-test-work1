@@ -45,17 +45,29 @@ class Ability
             :delete,
             :show_in_app,
 
-            :approval_admin_delete,
+            :create,
+            :update,
+            :destroy,
+
+            :state,
+            :restore,
+            :consider,
+            :approve,
+            :deny
           ], Approval
     elsif user.worker?
       cannot :manage, Approval
       can :index, Approval, created_by_id: user.id
       can [
+            :show,
+            :edit,
             :approval_worker_delete,
             :approval_worker_edit,
             :approval_worker_new,
             :approval_worker_show,
-            :state
+            :state,
+            :trash,
+            :restore
           ], Approval
       # cannot [
       #          #:index,
@@ -70,7 +82,7 @@ class Ability
       #        ], Approval
       # https://github.com/railsadminteam/rails_admin/wiki/CanCanCan#railsadmin-verbs
       # can :read, Approval
-      can :all_events, Approval
+      #
     end
   end
 end

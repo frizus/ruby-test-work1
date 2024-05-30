@@ -45,6 +45,7 @@ group :development, :test do
   gem 'rspec'
   gem 'simplecov'
   gem 'faker'
+  gem 'annotate', '2.7.1'
 end
 
 group :development do

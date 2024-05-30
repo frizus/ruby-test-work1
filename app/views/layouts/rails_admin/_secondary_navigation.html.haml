@@ -4,7 +4,8 @@
   - if main_app_root_path = (main_app.root_path rescue false)
     %li= link_to t('admin.home.name'), main_app_root_path
   - if _current_user
-    %li= link_to "Роль: #{_current_user.role.name}", 'javascript:void(0)', title: "Роль пользователя: #{_current_user.role.name}"
+    %li
+      != link_to("#{_current_user.fullname unless can? :edit, _current_user} Роль: #{_current_user.role.name}", 'javascript:void(0)', title: "Роль пользователя: #{_current_user.role.name}")
     - if user_link = edit_user_link
       %li.edit_user_root_link= user_link
     - if logout_path.present?

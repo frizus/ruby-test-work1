@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: approvals
+#
+#  id            :integer          not null, primary key
+#  type          :string
+#  created_by_id :integer
+#  period_from   :datetime
+#  period_to     :datetime
+#  comment       :text
+#  status        :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_approvals_on_created_by_id  (created_by_id)
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
@@ -7,8 +26,6 @@ one:
   period_to: 2024-05-26 10:21:45
   comment: MyText
   status: MyString
-  status_last_change_by: one
-  status_comment: MyText
 
 two:
   type: 
@@ -17,5 +34,3 @@ two:
   period_to: 2024-05-26 10:21:45
   comment: MyText
   status: MyString
-  status_last_change_by: two
-  status_comment: MyText

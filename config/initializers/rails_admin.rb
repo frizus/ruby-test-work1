@@ -48,22 +48,34 @@ RailsAdmin.config do |config|
 
     state
 
-    approval_admin_delete
-
-    approval_worker_delete
-    approval_worker_edit
     approval_worker_new
-    approval_worker_show
   end
 
   config.model 'Approval' do
     list do
-      scopes [nil, :not_answered]
+      scopes [nil, :not_answered, :considering, :approved, :denied, :trashed]
 
+      field :id
       field :status, :state
+      field :created_by do
+        pretty_value do
+          if label = bindings[:object].public_send(name).email rescue false
+            bindings[:view].link_to(
+              label,
+              RailsAdmin::Engine.routes.url_helpers.show_path(
+                model_name: 'user',
+                id: bindings[:object].created_by_id
+              ),
+              target: '_blank'
+            )
+          else
+            bindings[:object].created_by_id
+          end
+        end
+      end
 
-      fields :type, :period_from, :period_to, :comment, :status_comment
-      fields :created_by_id, :status_last_change_by_id, :created_at, :updated_at do
+      fields :type, :period_from, :period_to, :comment
+      fields :created_by, :created_at, :updated_at do
         visible do
           bindings[:view]._current_user.admin?
         end
@@ -71,12 +83,47 @@ RailsAdmin.config do |config|
     end
     # https://github.com/zcpdog/rails_admin_aasm/issues/3
     state({
-      events: {deleted: 'btn-danger', restored: 'btn-warning', consider: 'btn-success', approve: 'btn-success', deny: 'btn-danger'},
-      states: {delete: 'label-important', restore: 'label-warning', consider: 'label-success', approve: 'label-success', deny: 'label-danger'}
+      events: {trash: 'btn-default', restore: 'btn-default', consider: 'btn-default', approve: 'btn-success', deny: 'btn-warning'},
+      states: {created: 'label-primary', trashed: 'label-danger', restored: 'label-primary', considering: 'label-info', approved: 'label-success', denied: 'label-danger'}
     })
     edit do
+      fields :id do
+        read_only true
+        visible true
+      end
       fields :type, :period_from, :period_to, :comment
-      fields :created_by_id, :status, :status_last_change_by_id, :status_comment, :created_at, :updated_at do
+      field :created_by_id do
+        default_value do
+          bindings[:view]._current_user.id
+        end
+      end
+      fields :created_by_id, :status do
+        visible do
+          bindings[:view]._current_user.admin?
+        end
+      end
+      fields :created_at, :updated_at do
+        read_only true
+        visible true
+      end
+    end
+    show do
+      field :id
+      field :status
+      fields :type, :period_from, :period_to, :created_at, :updated_at
+      field :created_by do
+        pretty_value do
+          bindings[:view].link_to(
+            bindings[:object].public_send(name).email,
+            RailsAdmin::Engine.routes.url_helpers.show_path(
+              model_name: 'user',
+              id: bindings[:object].created_by_id
+            ),
+            target: '_blank'
+          )
+        end
+      end
+      fields :created_by_id, :status do
         visible do
           bindings[:view]._current_user.admin?
         end
