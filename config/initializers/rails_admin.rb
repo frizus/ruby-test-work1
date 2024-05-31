@@ -97,14 +97,13 @@ RailsAdmin.config do |config|
           bindings[:view]._current_user.id
         end
       end
-      fields :created_by_id, :status do
+      fields :id, :created_by_id, :created_at, :updated_at do
         visible do
           bindings[:view]._current_user.admin?
         end
       end
       fields :created_at, :updated_at do
         read_only true
-        visible true
       end
     end
     show do

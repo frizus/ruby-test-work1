@@ -30,6 +30,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :trackable, :validatable
   belongs_to :role
 
+  scope :admins, -> { joins(:role).where(roles: { name: 'admin' }) }
+
   def role?(needed_role)
     role.name == needed_role.to_s
   end

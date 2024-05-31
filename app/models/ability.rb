@@ -50,14 +50,13 @@ class Ability
             :destroy,
 
             :state,
-            :restore,
             :consider,
             :approve,
             :deny
           ], Approval
     elsif user.worker?
       cannot :manage, Approval
-      can :index, Approval, created_by_id: user.id
+      can [:index, :update], Approval, created_by_id: user.id
       can [
             :show,
             :approval_worker_new,

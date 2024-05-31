@@ -1,0 +1,53 @@
+<%
+  is_initial_state = @object.status == @object.aasm.states(initial: true).first.to_s
+  if changed_by = @changed_by.present? && @changed_by.fullname
+    if previously_new_record
+      changed_by = " (создал #{changed_by}"
+    else
+      changed_by = " (изменил #{changed_by})"
+    end
+  else
+    changed_by = nil
+  end
+  link_to_record = link_to(
+    "заявки ##{@object.id}",
+    RailsAdmin::Engine.routes.url_helpers.show_path(
+      model_name: 'approval',
+      id: @object.id
+    ),
+    target: '_blank'
+  )
+
+  admins_email ||= false
+%>
+<p>
+  У <%= link_to_record %> на <%= t("activerecord.attributes.type.#{@object.type}") %>
+  <% if @previous_status.present? %>
+    изменен статус:
+    <%= @object.status_formatted %>
+    (был <%= @object.status_formatted(@previous_status) %>)<%= changed_by %>
+  <% elsif is_initial_state %>
+    статус: <%= @object.status_formatted %><%= changed_by %>
+  <% else %>
+    изменен статус: <%= @object.status_formatted %><%= changed_by %>
+  <% end %>
+  <br>
+  <% if admins_email && @object.created_by_id.present? && @object.created_by.present? %>
+    от <%= @object.created_by.fullname %><br>
+  <% end %>
+</p>
+<p>
+  <% if @object.period_from == @object.period_to %>
+    На дату <%= l @object.period_from %>
+  <% else %>
+    На период с <%= l @object.period_from %> по <%= l @object.period_to %>
+  <% end %>
+</p>
+<p>
+  Комментарий:
+  <% if @object.comment.present? %>
+    <%= @object.comment %>
+  <% else %>
+    <i>не оставлен</i>
+  <% end %>
+</p>

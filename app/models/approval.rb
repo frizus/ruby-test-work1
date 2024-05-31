@@ -21,6 +21,7 @@ class Approval < ApplicationRecord
   include AASM
 
   aasm column: 'status' do
+    # TODO сделать отправку письма при стартовом статусе
     state :created, initial: true
     state :trashed
     state :restored
@@ -28,20 +29,28 @@ class Approval < ApplicationRecord
     state :approved
     state :denied
 
-    event :trash do
+    event :trash, after_commit: :send_email do
       transitions from: %i(created restored), to: :trashed
     end
-    event :restore do
+    event :restore, after_commit: :send_email do
       transitions from: %i(trashed), to: :restored
     end
-    event :consider do
+    event :consider, after_commit: :send_email do
       transitions from: %i(created restored denied approved), to: :considering
     end
-    event :approve do
+    event :approve, after_commit: :send_email do
       transitions from: %i(created restored considering denied), to: :approved
     end
-    event :deny do
+    event :deny, after_commit: :send_email do
       transitions from: %i(created restored considering approved), to: :denied
+    end
+  end
+
+  def send_email
+    if %w(created restored trashed).include? status
+      ApprovalMailer.admins_email(self, aasm.from_state).deliver_now
+    elsif %w(considering approved denied).include? status
+      ApprovalMailer.worker_email(self, aasm.from_state).deliver_now
     end
   end
 
@@ -51,6 +60,10 @@ class Approval < ApplicationRecord
 
   self.inheritance_column = :type1
   belongs_to :created_by, class_name: 'User', foreign_key: 'created_by_id'
+
+  validates :type, presence: true
+  validates :period_from, presence: true
+  validates :period_to, presence: true
 
   scope :not_answered, -> { where(status: %w(created restored considering))}
 
@@ -64,15 +77,16 @@ class Approval < ApplicationRecord
     end
   end
 
-  def status_enum
-    self.class.statuses.each_with_object({}) do |(_, v), h|
-      h[self.class.aasm.human_event_name(v)] = v
-    end
+  def status_formatted(specific_status = nil)
+    specific_status = status if specific_status.nil?
+    self.class.aasm.human_event_name(specific_status)
   end
 
-  validates :type, presence: true
-  validates :period_from, presence: true
-  validates :period_to, presence: true
+  def status_enum
+    self.class.statuses.each_with_object({}) do |(_, v), h|
+      h[status_formatted(v)] = v
+    end
+  end
 
   rails_admin do
     list do
@@ -81,11 +95,6 @@ class Approval < ApplicationRecord
           value ? I18n.t("activerecord.attributes.type.#{value}") : '-'
         end
       end
-      # field :status do
-      #   pretty_value do
-      #     value ? I18n.t("activerecord.attributes.status.#{value}") : '-'
-      #   end
-      # end
     end
   end
 end

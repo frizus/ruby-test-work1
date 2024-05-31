@@ -21,18 +21,18 @@
 
 en:
   hello: "Hello world"
+  date:
+    formats:
+      default: "%d.%m.%Y"
+  datetime:
+    formats:
+      default: "%d.%m.%Y %H:%M:%S"
+
   activerecord:
     attributes:
       type:
         vacation: "Отпуск"
         time_off: "Отгул"
-      status:
-        created: "Заведена"
-        trashed: "Удалена"
-        restored: "Восстановлена"
-        considering: "На рассмотрении"
-        approved: "Одобрена"
-        denied: "Отклонена"
 
   admin:
     state_machine:
