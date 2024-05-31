@@ -45,6 +45,10 @@ class Approval < ApplicationRecord
     end
   end
 
+  def editable_by_worker?
+    status == 'created' || status == 'restored'
+  end
+
   self.inheritance_column = :type1
   belongs_to :created_by, class_name: 'User', foreign_key: 'created_by_id'
 

@@ -60,15 +60,14 @@ class Ability
       can :index, Approval, created_by_id: user.id
       can [
             :show,
-            :edit,
-            :approval_worker_delete,
-            :approval_worker_edit,
             :approval_worker_new,
-            :approval_worker_show,
             :state,
             :trash,
             :restore
           ], Approval
+      can :edit, Approval do |object|
+        object.editable_by_worker?
+      end
       # cannot [
       #          #:index,
       #          :export,
