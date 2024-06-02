@@ -58,12 +58,31 @@ class Approval < ApplicationRecord
     status == 'created' || status == 'restored'
   end
 
+  after_commit :send_email_on_create_status, on: :create
+
+  def send_email_on_create_status
+    return unless status == self.class.aasm.initial_state.to_s
+
+    send_email
+  end
+
   self.inheritance_column = :type1
   belongs_to :created_by, class_name: 'User', foreign_key: 'created_by_id'
 
   validates :type, presence: true
   validates :period_from, presence: true
   validates :period_to, presence: true
+  validate :period_to_must_be_no_less_than_period_from
+  validate :date_is_not_less_than_today
+
+  def period_to_must_be_no_less_than_period_from
+    errors.add(:period_to, "must be not less than Period from") if period_to < period_from
+  end
+
+  def date_is_not_less_than_today
+    errors.add(:period_from, "must not be in the past") if period_from < Date.today
+    errors.add(:period_to, "must not be in the past") if period_to < Date.today
+  end
 
   scope :not_answered, -> { where(status: %w(created restored considering))}
 
