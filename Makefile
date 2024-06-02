@@ -1,23 +1,13 @@
-server: server-dev
+run: server-dev
 
 server-dev:
-	#rm tmp/pids/server.pid 2>/dev/null || true
 	RAILS_ENV=development bundle exec rails s -b 0.0.0.0
-
-server-development: server-dev
 
 server-test:
 	RAILS_ENV=test bundle exec rails s -b 0.0.0.0
 
 server-prod:
 	RAILS_ENV=production bundle exec rails s -b 0.0.0.0
-
-server-production: server-prod
-
-install: install-gems install-db
-
-build: install
-compile: install
 
 install-gems:
 	bundle install --path 'vendor/bundle'
@@ -26,7 +16,10 @@ update-gems:
 	bundle update
 
 install-db:
-	bundle exec rails db:reset
+	bin/rails db:drop
+	bin/rails db:create
+	bin/rails db:schema:load
+	bin/rails db:migrate
 
 test:
 	RAILS_ENV=test bundle exec rspec
@@ -34,7 +27,22 @@ test:
 lint:
 	bundle exec rubocop
 
+install: install-gems install-db
+
+setup: install
+
+build: install
+
+compile: install
+
+server-development: server-dev
+
+server-production: server-prod
+
+server: server-dev
+
 linter: lint
+
 syntax: lint
 
 .PHONY: test
