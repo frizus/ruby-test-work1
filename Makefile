@@ -22,10 +22,19 @@ compile: install
 install-gems:
 	bundle install --path 'vendor/bundle'
 
+update-gems:
+	bundle update
+
 install-db:
 	bundle exec rails db:reset
 
 test:
 	RAILS_ENV=test bundle exec rspec
+
+lint:
+	bundle exec rubocop
+
+linter: lint
+syntax: lint
 
 .PHONY: test

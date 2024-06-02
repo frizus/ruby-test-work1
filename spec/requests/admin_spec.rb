@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Admin", type: :request do
+RSpec.describe 'Admin', type: :request do
   let(:admin_url_helpers) {
     RailsAdmin::Engine.routes.url_helpers
   }
@@ -11,15 +11,15 @@ RSpec.describe "Admin", type: :request do
 
   let(:user) {
     {
-      email: "admin@example.com",
-      password: "admin"
+      email: 'admin@example.com',
+      password: 'admin'
     }
   }
 
   let(:worker) {
     {
-      email: "worker1@example.com",
-      password: "worker1"
+      email: 'worker1@example.com',
+      password: 'worker1'
     }
   }
 
@@ -31,7 +31,7 @@ RSpec.describe "Admin", type: :request do
     Approval.where(created_by_id: find_worker.id, status: 'created').order(:id).limit(1).first
   }
 
-  it "should authorize, change worker's approval status, and worker must receive e-mail" do
+  it 'should authorize, change worker\'s approval status, and worker must receive e-mail' do
     post user_session_path, params: { user: user }
     expect(response).to redirect_to(root_path)
 
@@ -46,7 +46,7 @@ RSpec.describe "Admin", type: :request do
     end.count).to eq(1)
   end
 
-  it "should not be able to use worker action" do
+  it 'should not be able to use worker action' do
     post user_session_path, params: { user: user }
     aroot_path = root_path
     expect(response).to redirect_to(aroot_path)

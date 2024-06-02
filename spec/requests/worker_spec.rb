@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Worker", type: :request do
+RSpec.describe 'Worker', type: :request do
   let(:admin_url_helpers) {
     RailsAdmin::Engine.routes.url_helpers
   }
@@ -11,18 +11,18 @@ RSpec.describe "Worker", type: :request do
 
   let(:user) {
     {
-      email: "worker1@example.com",
-      password: "worker1"
+      email: 'worker1@example.com',
+      password: 'worker1'
     }
   }
 
   let(:approval) {
-    format = ::I18n.t(:long, scope: [:time, :formats], raise: true) rescue "%B %d, %Y %H:%M"
+    format = ::I18n.t(:long, scope: [:time, :formats], raise: true) rescue '%B %d, %Y %H:%M'
     {
-      type: "vacation",
+      type: 'vacation',
       period_from: Date.today.strftime(format),
       period_to: 14.days.from_now.strftime(format),
-      comment: "workers_spec test"
+      comment: 'workers_spec test'
     }
   }
 
@@ -34,7 +34,7 @@ RSpec.describe "Worker", type: :request do
     User.admins.limit(1).first
   }
 
-  it "should authorize, create new approval, and admin must receive e-mail" do
+  it 'should authorize, create new approval, and admin must receive e-mail' do
     post user_session_path, params: { user: user }
     expect(response).to redirect_to(root_path)
 
@@ -44,15 +44,15 @@ RSpec.describe "Worker", type: :request do
     expect(Approval.limit(2).where(comment: approval[:comment]).count).to be > remembered_last_approval_count
 
     if admin
-       expect(ActionMailer::Base.deliveries.select do |mail|
+      expect(ActionMailer::Base.deliveries.select do |mail|
         mail.to.include? admin.email
       end.count).to eq(1)
     else
-      puts "No admins found, can't check if e-mail was sent to admins"
+      puts 'No admins found, can\'t check if e-mail was sent to admins'
     end
   end
 
-  it "should not be able to use admin action" do
+  it 'should not be able to use admin action' do
     post user_session_path, params: { user: user }
     aroot_path = root_path
     expect(response).to redirect_to(aroot_path)
