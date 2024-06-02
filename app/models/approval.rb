@@ -21,7 +21,6 @@ class Approval < ApplicationRecord
   include AASM
 
   aasm column: 'status' do
-    # TODO сделать отправку письма при стартовом статусе
     state :created, initial: true
     state :trashed
     state :restored
