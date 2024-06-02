@@ -24,13 +24,13 @@ class ApprovalMailer < ApplicationMailer
 
   private
 
-  def prepare_data(object, previous_status)
-    @object = object
-    @previous_status = previous_status
-    # @changed_by = params[:changed_by] || (params[:changed_by_id] && User.find(params[:changed_by_id]))
-    @subject = "Статус заявки ##{@object.id} на #{t("activerecord.attributes.type.#{@object.type}")}: #{@object.status_formatted}"
-    if @previous_status
-      @subject += " (был #{@object.status_formatted(@previous_status)})"
+    def prepare_data(object, previous_status)
+      @object = object
+      @previous_status = previous_status
+      # @changed_by = params[:changed_by] || (params[:changed_by_id] && User.find(params[:changed_by_id]))
+      @subject = "Статус заявки ##{@object.id} на #{t("activerecord.attributes.type.#{@object.type}")}: #{@object.status_formatted}"
+      if @previous_status
+        @subject += " (был #{@object.status_formatted(@previous_status)})"
+      end
     end
-  end
 end
