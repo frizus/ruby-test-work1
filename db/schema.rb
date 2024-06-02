@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 20240526102145) do
     t.date     "period_to"
     t.text     "comment"
     t.string   "status"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.index ["created_by_id"], name: "index_approvals_on_created_by_id"
   end
 
