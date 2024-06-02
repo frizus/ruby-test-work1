@@ -24,7 +24,7 @@
 
 Если нет своей рабочей среды с `ruby-2.2.10`, можно установить конфигурацию `Docker` для `WSL2` отсюда https://github.com/frizus/ruby_2_docker/tree/for-ruby-test-work1
 ```sh
-git clone -b for-ruby-test-work1 git@github.com:frizus/ruby_2_docker.git ruby-test-work1/
+git clone -b for-ruby-test-work1 https://github.com/frizus/ruby_2_docker.git ruby-test-work1/
 ```
 Дальше смотреть [README.md](https://github.com/frizus/ruby_2_docker/blob/for-ruby-test-work1/README.md) оттуда
 
