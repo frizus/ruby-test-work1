@@ -43,7 +43,8 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'rspec'
-  gem 'simplecov'
+  gem 'rspec-rails', '~> 4.1.0'
+  gem 'simplecov', require: false
   gem 'faker'
   gem 'annotate', '2.7.1'
   gem 'rubocop'
