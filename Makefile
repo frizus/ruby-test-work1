@@ -16,10 +16,17 @@ update-gems:
 	bundle update
 
 install-db:
-	bin/rails db:drop
-	bin/rails db:create
-	bin/rails db:schema:load
-	bin/rails db:migrate
+	export RAILS_ENV=development
+	bundle exec rails db:drop
+	bundle exec rails db:create
+	bundle exec rails db:schema:load
+	bundle exec rails db:migrate
+	export RAILS_ENV=test
+	bundle exec rails db:drop
+	bundle exec rails db:create
+	bundle exec rails db:schema:load
+	bundle exec rails db:migrate
+	unset RAILS_ENV
 
 test:
 	RAILS_ENV=test bundle exec rspec
