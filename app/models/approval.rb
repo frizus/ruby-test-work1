@@ -76,15 +76,15 @@ class Approval < ApplicationRecord
   validate :date_is_not_less_than_today
 
   def period_to_must_be_no_less_than_period_from
-    errors.add(:period_to, "must be not less than Period from") if period_to < period_from
+    errors.add(:period_to, 'must be not less than Period from') if period_to < period_from
   end
 
   def date_is_not_less_than_today
-    errors.add(:period_from, "must not be in the past") if period_from < Date.today
-    errors.add(:period_to, "must not be in the past") if period_to < Date.today
+    errors.add(:period_from, 'must not be in the past') if period_from < Date.today
+    errors.add(:period_to, 'must not be in the past') if period_to < Date.today
   end
 
-  scope :not_answered, -> { where(status: %w(created restored considering))}
+  scope :not_answered, -> { where(status: %w(created restored considering)) }
 
   # https://vitalyliber.medium.com/how-to-translate-enum-in-rails-admin-ec001456e629
   enum type: %w(vacation time_off).each_with_object({}) { |e, h| h[e] = e }

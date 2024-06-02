@@ -2,7 +2,7 @@ class ApprovalMailer < ApplicationMailer
   def admins_email(object, previous_status = nil)
     prepare_data(object, previous_status)
     User.admins.select('id', 'email').find_in_batches(batch_size: 100) do |group| # Оставлю на другой раз отправку писем по одному через ActionJob
-      emails = group.collect(&:email).join(",")
+      emails = group.collect(&:email).join(',')
       mail(
         to: emails,
         subject: @subject,
