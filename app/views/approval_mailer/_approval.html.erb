@@ -33,7 +33,16 @@
   <% end %>
   <br>
   <% if admins_email && @object.created_by_id.present? && @object.created_by.present? %>
-    от <%= @object.created_by.fullname %><br>
+    от
+    <%= link_to(
+          @object.created_by.email,
+          RailsAdmin::Engine.routes.url_helpers.show_path(
+            model_name: 'user',
+            id: @object.created_by_id
+          ),
+          target: '_blank'
+        ) %>
+    <br>
   <% end %>
 </p>
 <p>
